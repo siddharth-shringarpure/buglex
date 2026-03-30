@@ -1,0 +1,6 @@
+dataset,accuracy_delta_mean,accuracy_percent_improvement,precision_macro_delta_mean,precision_macro_percent_improvement,recall_macro_delta_mean,recall_macro_percent_improvement,f1_macro_delta_mean,f1_macro_percent_improvement,auc_delta_mean,auc_percent_improvement
+caffe,0.031,3.515,0.101,14.278,0.175,29.553,0.166,27.069,0.325,54.78
+incubator-mxnet,0.079,9.486,0.273,50.794,0.322,62.342,0.308,59.844,0.435,84.206
+keras,0.14,18.661,0.269,48.053,0.326,60.499,0.306,56.744,0.404,74.835
+pytorch,0.063,7.502,0.227,41.08,0.33,63.226,0.286,54.714,0.425,81.379
+tensorflow,0.192,26.193,0.259,43.145,0.291,46.661,0.276,45.491,0.344,55.178

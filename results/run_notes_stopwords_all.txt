@@ -1,0 +1,12 @@
+Run notes
+generated_at=2026-03-30T22:25:37
+preprocessing_mode=stopwords_all
+split_seeds=0..29
+test_size=0.3
+split_strategy=paired stratified train_test_split
+tfidf_fit_scope=train only per split
+embedding_cache=reused when dimension-specific files already exist
+primary_metric=macro_f1
+significance_tests=wilcoxon on macro_f1 only; friedman on main-model macro_f1 ranks
+secondary_metrics=accuracy precision_macro recall_macro auc
+benchmarks=feature_prep fit prediction stages

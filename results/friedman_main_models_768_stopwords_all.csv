@@ -1,0 +1,6 @@
+dataset,models_compared,friedman_statistic,friedman_p_value,baseline_nb_tfidf_mean_rank,tfidf_lr_mean_rank,embedding_lr_mean_rank,hybrid_lr_mean_rank
+caffe,"baseline_nb_tfidf, tfidf_lr, embedding_lr, hybrid_lr",53.51677852348996,1.4225359091305361e-11,3.7666666666666666,2.6,2.2666666666666666,1.3666666666666667
+incubator-mxnet,"baseline_nb_tfidf, tfidf_lr, embedding_lr, hybrid_lr",69.96321070234116,4.346466176461837e-15,4.0,2.7333333333333334,1.8166666666666667,1.45
+keras,"baseline_nb_tfidf, tfidf_lr, embedding_lr, hybrid_lr",72.72000000000003,1.1160231534116634e-15,4.0,2.6,2.2,1.2
+pytorch,"baseline_nb_tfidf, tfidf_lr, embedding_lr, hybrid_lr",68.93979933110371,7.198728587252619e-15,4.0,2.683333333333333,1.9,1.4166666666666667
+tensorflow,"baseline_nb_tfidf, tfidf_lr, embedding_lr, hybrid_lr",85.84000000000003,1.7133240872268673e-18,4.0,3.0,1.8666666666666667,1.1333333333333333

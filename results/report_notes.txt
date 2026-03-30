@@ -1,0 +1,15 @@
+- Largest hybrid-vs-baseline macro-F1 gain: Incubator-MXNet (0.3412)
+- Smallest hybrid-vs-baseline macro-F1 gain: Caffe (0.1653)
+- Best non-hybrid model overall: Late Fusion LogReg
+- Late fusion vs hybrid: competitive, but weaker on every dataset; largest gap on Caffe
+- Smallest embedding dimension within 0.01 of hybrid 768 per dataset:
+- Caffe: 512 dimensions
+- Incubator-MXNet: 128 dimensions
+- Keras: 128 dimensions
+- PyTorch: 256 dimensions
+- TensorFlow: 256 dimensions
+- Fastest mean inference model: TF-IDF + LogReg
+- Lowest mean peak Python memory: Embedding Centroid
+- Preprocessing ablation summary: lightweight default remained the best overall practical choice
+- kNN note: cosine distance with brute-force search and odd k=5 avoids exact vote-count ties in the binary setting
+- Token cap note: 256-token embedding limit was kept because 512 tokens increased runtime on larger datasets
