@@ -26,3 +26,9 @@ wheels/
 *.run.xml
 *.synctex.gz
 *.toc
+
+# Dev tools
+.vscode/
+.idea/
+.ipynb_checkpoints/
+.ruff_cache/
