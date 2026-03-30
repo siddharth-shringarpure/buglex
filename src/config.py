@@ -27,6 +27,16 @@ METRIC_COLUMNS = (
     "f1_macro",
     "auc",
 )
+BENCHMARK_COLUMNS = (
+    "feature_prep_seconds",
+    "feature_prep_memory_mb",
+    "fit_seconds",
+    "fit_memory_mb",
+    "predict_seconds",
+    "predict_memory_mb",
+    "runtime_seconds",
+    "peak_python_memory_mb",
+)
 
 EMBEDDING_MODEL_NAME = "nomic-ai/nomic-embed-text-v1.5"
 EMBEDDING_BATCH_SIZE = 8
