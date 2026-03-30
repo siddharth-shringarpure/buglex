@@ -37,3 +37,10 @@ EMBEDDING_DIMENSIONS = [MAIN_EMBEDDING_DIMENSION] + ABLATION_DIMENSIONS
 ABLATION_DIMENSIONS_SLUG = "_".join(str(dimension) for dimension in ABLATION_DIMENSIONS)
 TFIDF_MAX_FEATURES = 3000
 TFIDF_NGRAM_RANGE = (1, 2)
+PREPROCESSING_MODES = (
+    "none",
+    "stopwords_all",
+    "stopwords_keep_negation",
+    "lemmatize",
+    "stopwords_keep_negation+lemmatize",
+)
