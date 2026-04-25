@@ -3,11 +3,14 @@
 from pathlib import Path
 
 import pandas as pd
+from rich.console import Console
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
+from ..config import DATASETS_DIR, REPO_ROOT, RESULTS_DIR
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-RESULTS_DIR = ROOT_DIR / "results"
-REPORT_DIR = ROOT_DIR / "docs" / "report"
+_console = Console()
+
+REPORT_DIR = REPO_ROOT / "docs" / "report"
 TABLES_DIR = REPORT_DIR / "tables"
 
 MAIN_RESULTS_PATH = RESULTS_DIR / "main_table_macro_f1.csv"
@@ -26,46 +29,77 @@ def main() -> None:
     """Build all report tables and extracted notes."""
     TABLES_DIR.mkdir(parents=True, exist_ok=True)
 
-    _write_text(
-        TABLES_DIR / "main_results.tex",
-        _build_main_results_table(pd.read_csv(MAIN_RESULTS_PATH)),
-    )
-    _write_text(
-        TABLES_DIR / "wilcoxon_results.tex",
-        _build_wilcoxon_table(pd.read_csv(WILCOXON_PATH)),
-    )
-    _write_text(
-        TABLES_DIR / "secondary_metrics.tex",
-        _build_secondary_metrics_table(pd.read_csv(SECONDARY_METRICS_PATH)),
-    )
-    _write_text(
-        TABLES_DIR / "metric_deltas.tex",
-        _build_metric_deltas_table(pd.read_csv(METRIC_DELTAS_PATH)),
-    )
-    _write_text(
-        TABLES_DIR / "preproc_ablation.tex",
-        _build_preproc_ablation_table(pd.read_csv(PREPROC_ABLATION_PATH)),
-    )
-    _write_text(
-        TABLES_DIR / "embedding_ablation.tex",
-        _build_embedding_ablation_table(pd.read_csv(EMBEDDING_ABLATION_PATH)),
-    )
-    _write_text(
-        TABLES_DIR / "efficiency_summary.tex",
-        _build_efficiency_table(
-            summary_df=pd.read_csv(SUMMARY_PATH),
-            benchmark_df=pd.read_csv(BENCHMARK_PATH),
+    tasks = [
+        (
+            "Main results table",
+            TABLES_DIR / "main_results.tex",
+            lambda: _build_main_results_table(pd.read_csv(MAIN_RESULTS_PATH)),
         ),
-    )
-    _write_text(
-        REPORT_NOTES_PATH,
-        _build_report_notes(
-            summary_df=pd.read_csv(SUMMARY_PATH),
-            benchmark_df=_read_optional_csv(BENCHMARK_PATH),
-            embedding_ablation_df=pd.read_csv(EMBEDDING_ABLATION_PATH),
-            late_fusion_df=pd.read_csv(LATE_FUSION_PATH),
+        (
+            "Dataset overview table",
+            TABLES_DIR / "dataset_overview.tex",
+            _build_dataset_overview_table,
         ),
-    )
+        (
+            "Wilcoxon results table",
+            TABLES_DIR / "wilcoxon_results.tex",
+            lambda: _build_wilcoxon_table(pd.read_csv(WILCOXON_PATH)),
+        ),
+        (
+            "Secondary metrics table",
+            TABLES_DIR / "secondary_metrics.tex",
+            lambda: _build_secondary_metrics_table(pd.read_csv(SECONDARY_METRICS_PATH)),
+        ),
+        (
+            "Metric deltas table",
+            TABLES_DIR / "metric_deltas.tex",
+            lambda: _build_metric_deltas_table(pd.read_csv(METRIC_DELTAS_PATH)),
+        ),
+        (
+            "Preprocessing ablation table",
+            TABLES_DIR / "preproc_ablation.tex",
+            lambda: _build_preproc_ablation_table(pd.read_csv(PREPROC_ABLATION_PATH)),
+        ),
+        (
+            "Embedding ablation table",
+            TABLES_DIR / "embedding_ablation.tex",
+            lambda: _build_embedding_ablation_table(
+                pd.read_csv(EMBEDDING_ABLATION_PATH)
+            ),
+        ),
+        (
+            "Efficiency summary table",
+            TABLES_DIR / "efficiency_summary.tex",
+            lambda: _build_efficiency_table(
+                summary_df=pd.read_csv(SUMMARY_PATH),
+                benchmark_df=pd.read_csv(BENCHMARK_PATH),
+            ),
+        ),
+        (
+            "Report notes",
+            REPORT_NOTES_PATH,
+            lambda: _build_report_notes(
+                summary_df=pd.read_csv(SUMMARY_PATH),
+                benchmark_df=_read_optional_csv(BENCHMARK_PATH),
+                embedding_ablation_df=pd.read_csv(EMBEDDING_ABLATION_PATH),
+                late_fusion_df=pd.read_csv(LATE_FUSION_PATH),
+            ),
+        ),
+    ]
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=_console,
+        transient=True,
+    ) as progress:
+        task_id = progress.add_task("", total=len(tasks))
+        for label, path, build_fn in tasks:
+            progress.update(task_id, description=label)
+            _write_text(path, build_fn())
+            progress.advance(task_id)
+
+    _console.print(f"✓ {len(tasks)} files written to [bold]{TABLES_DIR.parent}[/bold]")
 
 
 def _build_main_results_table(df: pd.DataFrame) -> str:
@@ -98,6 +132,35 @@ def _build_main_results_table(df: pd.DataFrame) -> str:
             "Embedding LogReg",
             "Hybrid LogReg",
         ],
+        rows,
+    )
+
+
+def _build_dataset_overview_table() -> str:
+    """Create the dataset overview table from raw dataset CSVs."""
+    rows = []
+    for dataset_name in [
+        "caffe",
+        "incubator-mxnet",
+        "keras",
+        "pytorch",
+        "tensorflow",
+    ]:
+        df = pd.read_csv(DATASETS_DIR / f"{dataset_name}.csv")
+        total_reports = len(df)
+        positive_reports = int((df["class"] == 1).sum())
+        positive_rate = 100.0 * positive_reports / total_reports
+        rows.append(
+            [
+                _format_dataset_name(dataset_name),
+                str(total_reports),
+                str(positive_reports),
+                _format_percent(positive_rate, places=2),
+            ]
+        )
+    return _tabular(
+        "lccc",
+        ["Project", "Reports", "Positive reports", "Positive rate"],
         rows,
     )
 
@@ -302,7 +365,7 @@ def _build_efficiency_table(
         )
     return _tabular(
         "lccc",
-        ["Model", "Mean macro-F1", "Runtime (s)", "Peak Python memory (MB)"],
+        ["Model", "Mean macro-F1", "Runtime (s)", "Peak Memory (MB)"],
         rows,
     )
 
@@ -450,7 +513,7 @@ def _format_dataset_name(name: str) -> str:
 def _format_model_name(name: str) -> str:
     """Convert model ids into report-friendly labels."""
     mapping = {
-        "baseline_nb_tfidf": "Baseline NB + TF-IDF",
+        "baseline_nb_tfidf": "Baseline",
         "tfidf_lr": "TF-IDF + LogReg",
         "embedding_lr": "Embedding LogReg",
         "late_fusion_lr": "Late Fusion LogReg",
@@ -485,7 +548,12 @@ def _format_percent(value: object, places: int = 1) -> str:
 
 def _format_p_value(value: object) -> str:
     """Format a p-value using scientific notation."""
-    return f"${_to_float(value):.4g}$"
+    val_str = f"{_to_float(value):.4g}"
+    if "e" in val_str:
+        # Convert to proper standard form
+        base, exp = val_str.split("e")
+        return f"${base} \\times 10^{{{int(exp)}}}$"
+    return f"${val_str}$"
 
 
 def _as_str(value: object) -> str:
