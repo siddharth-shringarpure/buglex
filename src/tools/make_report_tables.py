@@ -6,20 +6,29 @@ import pandas as pd
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
-from ..config import AVAILABLE_DATASETS, DATASETS_DIR, RESULTS_DIR, TABLES_DIR
+from ..config import (
+    ABLATION_DIMENSIONS_SLUG,
+    AVAILABLE_DATASETS,
+    DATASETS_DIR,
+    MAIN_EMBEDDING_DIMENSION,
+    RESULTS_DIR,
+    TABLES_DIR,
+)
 
 _console = Console()
 
 MAIN_RESULTS_PATH = RESULTS_DIR / "main_table_macro_f1.csv"
-WILCOXON_PATH = RESULTS_DIR / "wilcoxon_summary_768.csv"
+WILCOXON_PATH = RESULTS_DIR / f"wilcoxon_summary_{MAIN_EMBEDDING_DIMENSION}.csv"
 SECONDARY_METRICS_PATH = RESULTS_DIR / "secondary_metrics_table.csv"
 METRIC_DELTAS_PATH = RESULTS_DIR / "metric_deltas_hybrid_vs_baseline.csv"
 PREPROC_ABLATION_PATH = RESULTS_DIR / "ablation_preproc_summary.csv"
-EMBEDDING_ABLATION_PATH = RESULTS_DIR / "embedding_ablation_summary_512_256_128_64.csv"
 LATE_FUSION_PATH = RESULTS_DIR / "late_fusion_vs_hybrid.csv"
-SUMMARY_PATH = RESULTS_DIR / "summary_768.csv"
-BENCHMARK_PATH = RESULTS_DIR / "benchmark_stage_summary_768.csv"
+BENCHMARK_PATH = RESULTS_DIR / f"benchmark_stage_summary_{MAIN_EMBEDDING_DIMENSION}.csv"
 REPORT_NOTES_PATH = RESULTS_DIR / "report_notes.txt"
+SUMMARY_PATH = RESULTS_DIR / f"summary_{MAIN_EMBEDDING_DIMENSION}.csv"
+EMBEDDING_ABLATION_PATH = (
+    RESULTS_DIR / f"embedding_ablation_summary_{ABLATION_DIMENSIONS_SLUG}.csv"
+)
 
 
 def main() -> None:
@@ -451,8 +460,8 @@ def _build_report_notes(
             "best overall practical choice",
             "- kNN note: cosine distance with brute-force search and odd "
             "k=5 avoids exact vote-count ties in the binary setting",
-            "- Token cap note: 256-token embedding limit was kept because 512 "
-            "tokens increased runtime on larger datasets",
+            "- Token cap note: 256-token embedding limit was kept, as 512 "
+            "tokens increased runtime",
         ]
     )
     return "\n".join(lines) + "\n"
