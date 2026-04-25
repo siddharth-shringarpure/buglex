@@ -32,3 +32,7 @@ wheels/
 .idea/
 .ipynb_checkpoints/
 .ruff_cache/
+
+# Results-related
+!results/
+results/embeddings/
