@@ -12,4 +12,4 @@
 - Lowest mean peak Python memory: Embedding Centroid
 - Preprocessing ablation summary: lightweight default remained the best overall practical choice
 - kNN note: cosine distance with brute-force search and odd k=5 avoids exact vote-count ties in the binary setting
-- Token cap note: 256-token embedding limit was kept because 512 tokens increased runtime on larger datasets
+- Token cap note: 256-token embedding limit was kept, as 512 tokens increased runtime
