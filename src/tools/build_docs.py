@@ -47,10 +47,16 @@ def _build_report() -> None:
     ) as progress:
         steps = [
             (
+                "Generating plots",
+                [sys.executable, "-m", "src.plot_results"],
+                REPO_ROOT,
+                False,
+            ),
+            (
                 "Building tables",
                 [sys.executable, "-m", "src.tools.make_report_tables"],
                 REPO_ROOT,
-                False,  # permit `make_report_tables` output
+                False,
             ),
         ]
 
