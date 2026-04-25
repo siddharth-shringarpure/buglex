@@ -1,0 +1,13 @@
+\begin{tabular}{lccc}
+\toprule
+Model & Mean macro-F1 & Runtime (s) & Peak Memory (MB) \\
+\midrule
+Baseline & 0.5625 & 0.7683 & 28.07 \\
+TF-IDF + LogReg & 0.7824 & 0.5008 & 11.22 \\
+Embedding LogReg & 0.8184 & 0.0065 & 3.32 \\
+Late Fusion LogReg & 0.8310 & 0.5073 & 11.22 \\
+Hybrid LogReg & 0.8367 & 0.5266 & 13.39 \\
+Embedding Centroid & 0.7886 & 0.0029 & 1.29 \\
+Embedding kNN & 0.7948 & 0.0082 & 2.75 \\
+\bottomrule
+\end{tabular}
