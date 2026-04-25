@@ -7,6 +7,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DATASETS_DIR = REPO_ROOT / "datasets"
 RESULTS_DIR = REPO_ROOT / "results"
 EMBEDDING_CACHE_DIR = RESULTS_DIR / "embeddings"
+DOCS_DIR = REPO_ROOT / "docs"
+REPORT_DIR = DOCS_DIR / "report"
+TABLES_DIR = REPORT_DIR / "tables"
 
 AVAILABLE_DATASETS = (
     "caffe",

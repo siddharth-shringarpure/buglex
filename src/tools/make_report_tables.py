@@ -6,12 +6,9 @@ import pandas as pd
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
-from ..config import DATASETS_DIR, REPO_ROOT, RESULTS_DIR
+from ..config import AVAILABLE_DATASETS, DATASETS_DIR, RESULTS_DIR, TABLES_DIR
 
 _console = Console()
-
-REPORT_DIR = REPO_ROOT / "docs" / "report"
-TABLES_DIR = REPORT_DIR / "tables"
 
 MAIN_RESULTS_PATH = RESULTS_DIR / "main_table_macro_f1.csv"
 WILCOXON_PATH = RESULTS_DIR / "wilcoxon_summary_768.csv"
@@ -139,13 +136,7 @@ def _build_main_results_table(df: pd.DataFrame) -> str:
 def _build_dataset_overview_table() -> str:
     """Create the dataset overview table from raw dataset CSVs."""
     rows = []
-    for dataset_name in [
-        "caffe",
-        "incubator-mxnet",
-        "keras",
-        "pytorch",
-        "tensorflow",
-    ]:
+    for dataset_name in AVAILABLE_DATASETS:
         df = pd.read_csv(DATASETS_DIR / f"{dataset_name}.csv")
         total_reports = len(df)
         positive_reports = int((df["class"] == 1).sum())
