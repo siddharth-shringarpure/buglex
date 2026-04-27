@@ -108,7 +108,10 @@ def _build_report() -> None:
             _run(cmd, cwd=cwd, quiet=quiet)
             progress.advance(task_id)
 
-    _console.print(f"✓ {REPORT_TEX.with_suffix('.pdf').relative_to(REPO_ROOT)}")
+    report_pdf = REPORT_TEX.with_suffix(".pdf")
+    dest = REPO_ROOT / "report.pdf"
+    shutil.copy2(report_pdf, dest)
+    _console.print(f"✓ {dest.relative_to(REPO_ROOT)}")
 
 
 def _build_support_pdf(

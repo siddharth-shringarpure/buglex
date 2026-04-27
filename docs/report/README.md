@@ -22,3 +22,5 @@ uv run python -m src.tools.build_docs --report-only
 ```
 
 This script regenerates the LaTeX table fragments from `results/`, generates the plots, and then rebuilds `docs/report/report.pdf`.
+
+The finalised PDF is exported and placed in the repository root as `report.pdf`.
