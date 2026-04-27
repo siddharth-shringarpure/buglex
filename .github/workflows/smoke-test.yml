@@ -1,0 +1,41 @@
+name: Smoke Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke-test:
+    name: Baseline smoke test (no embeddings)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      # Run only TF-IDF + NB baseline on `caffe` dataset
+      # Requires no model download, proves reproducibility of env.
+      - name: Run baseline smoke test (caffe, TF-IDF + NB)
+        working-directory: src
+        run: uv run python run_baseline.py --dataset caffe
+
+      - name: Verify output files were written
+        run: |
+          test -f results/caffe_baseline_runs.csv    || (echo "Missing per-run CSV" && exit 1)
+          test -f results/caffe_baseline_summary.csv || (echo "Missing summary CSV" && exit 1)
+          echo "Output files present."

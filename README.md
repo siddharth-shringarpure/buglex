@@ -1,5 +1,7 @@
 # BUGLEX: Semantic–Lexical Fusion for Performance Bug Classification
 
+[![Smoke Test](https://github.com/siddharth-shringarpure/buglex/actions/workflows/smoke-test.yml/badge.svg)](https://github.com/siddharth-shringarpure/buglex/actions/workflows/smoke-test.yml)
+
 This repository provides the code and framework used to evaluate machine learning models for performance bug report classification, including feature engineering (TF-IDF and embeddings) and hybrid model training.
 
 ## Setup
