@@ -28,9 +28,8 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
 
-      # Verify every src/ module imports without errors.
-      # The embedding model is loaded lazily so this is safe — no download triggered.
-      - name: Check all modules import cleanly
+      # Verify that modules import without errors.
+      - name: Check modules import without errors
         working-directory: src
         run: |
           uv run python -c "
@@ -46,7 +45,7 @@ jobs:
           import models.knn
           import models.registry
           import experiments.evaluate
-          print('All imports OK')
+          print('✓ All imports OK')
           "
 
       # Prove the main experiment runner initialises without errors.
@@ -54,15 +53,14 @@ jobs:
         working-directory: src
         run: uv run python run_experiments.py --help
 
-      # Download the embedding model, verify output shape, and benchmark
-      # encoding throughput on a small synthetic batch.
-      # The model is ~270 MB; GitHub runners have fast internet so this is quick.
+      # Download embedding model, verify output shape, and benchmark encoding
+      # throughput on a small synthetic batch. <1min expected time on GH runner.
       - name: Verify embedding model and benchmark inference
         run: uv run python .github/scripts/check_embeddings.py
 
 
-      # Run only TF-IDF + NB baseline on `caffe` dataset
-      # Requires no model download, proves reproducibility of env.
+      # Run only TF-IDF + NB baseline on `caffe` dataset.
+      # Proves reproducibility of environment.
       - name: Run baseline smoke test (caffe, TF-IDF + NB)
         working-directory: src
         run: uv run python run_baseline.py --dataset caffe
@@ -70,6 +68,6 @@ jobs:
 
       - name: Verify output files were written
         run: |
-          test -f results/caffe_baseline_runs.csv    || (echo "Missing per-run CSV" && exit 1)
+          test -f results/caffe_baseline_runs.csv || (echo "Missing per-run CSV" && exit 1)
           test -f results/caffe_baseline_summary.csv || (echo "Missing summary CSV" && exit 1)
-          echo "Output files present."
+          echo "✓ Output files present"

@@ -29,7 +29,7 @@ def _load_model() -> SentenceTransformer:
 
 
 def _check_shape(model: SentenceTransformer) -> None:
-    """Encode one text and assert the output dimension is correct.
+    """Encode text and assert the output dimension is correct.
 
     Args:
         model: Loaded sentence embedding model.
@@ -58,8 +58,7 @@ def _benchmark_throughput(model: SentenceTransformer) -> None:
         AssertionError: If the batch output shape is unexpected.
     """
     texts = [
-        f"{_TASK_PREFIX}synthetic bug report number {i}"
-        for i in range(_BENCHMARK_N)
+        f"{_TASK_PREFIX}synthetic bug report number {i}" for i in range(_BENCHMARK_N)
     ]
     start = time.perf_counter()
     embeddings = model.encode(
