@@ -31,8 +31,7 @@ jobs:
       # 3. run all model variants over 30 splits
       # 4. write all result CSVs
       - name: Run full experiment pipeline (caffe)
-        working-directory: src
-        run: uv run python run_experiments.py --dataset caffe
+        run: uv run python -m src.run_experiments --dataset caffe
 
       - name: Verify key output files
         run: |

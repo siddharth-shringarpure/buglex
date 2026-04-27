@@ -24,6 +24,17 @@ source .venv/bin/activate  # bash/zsh
 
 Please see instructions at the [Installing uv](https://docs.astral.sh/uv/getting-started/installation/) page.
 
+### Without uv (pip)
+
+```bash
+python3.13 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+Then replace `uv run python` with `python` in any command below.
+
 ## Running Experiments
 
 Commands can be run directly using `uv`:

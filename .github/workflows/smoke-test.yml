@@ -30,28 +30,26 @@ jobs:
 
       # Verify that modules import without errors.
       - name: Check modules import without errors
-        working-directory: src
         run: |
           uv run python -c "
-          import config
-          import logging_config
-          import features.data_load
-          import features.text_prep
-          import features.tfidf_features
-          import features.embedding_features
-          import models.baseline_nb_tfidf
-          import models.linear_models
-          import models.centroid
-          import models.knn
-          import models.registry
-          import experiments.evaluate
+          import src.config
+          import src.logging_config
+          import src.features.data_load
+          import src.features.text_prep
+          import src.features.tfidf_features
+          import src.features.embedding_features
+          import src.models.baseline_nb_tfidf
+          import src.models.linear_models
+          import src.models.centroid
+          import src.models.knn
+          import src.models.registry
+          import src.experiments.evaluate
           print('✓ All imports OK')
           "
 
       # Prove the main experiment runner initialises without errors.
       - name: Check experiment runner --help
-        working-directory: src
-        run: uv run python run_experiments.py --help
+        run: uv run python -m src.run_experiments --help
 
       # Download embedding model, verify output shape, and benchmark encoding
       # throughput on a small synthetic batch. <1min expected time on GH runner.
@@ -62,8 +60,7 @@ jobs:
       # Run only TF-IDF + NB baseline on `caffe` dataset.
       # Proves reproducibility of environment.
       - name: Run baseline smoke test (caffe, TF-IDF + NB)
-        working-directory: src
-        run: uv run python run_baseline.py --dataset caffe
+        run: uv run python -m src.run_baseline --dataset caffe
 
 
       - name: Verify output files were written
