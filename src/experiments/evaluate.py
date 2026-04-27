@@ -20,7 +20,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 
-from config import (
+from ..config import (
     ABLATION_DIMENSIONS,
     ABLATION_DIMENSIONS_SLUG,
     AVAILABLE_DATASETS,
@@ -32,19 +32,19 @@ from config import (
     SEEDS,
     TEST_SIZE,
 )
-from features.data_load import load_dataset
-from features.embedding_features import build_and_cache_embeddings_for_dim
-from features.text_prep import preprocess_texts
-from features.tfidf_features import build_tfidf_train_test
-from models.baseline_nb_tfidf import BaselineNbTfidf
-from models.centroid import CentroidClassifier
-from models.knn import KnnEmbeddingClassifier
-from models.linear_models import (
+from ..features.data_load import load_dataset
+from ..features.embedding_features import build_and_cache_embeddings_for_dim
+from ..features.text_prep import preprocess_texts
+from ..features.tfidf_features import build_tfidf_train_test
+from ..models.baseline_nb_tfidf import BaselineNbTfidf
+from ..models.centroid import CentroidClassifier
+from ..models.knn import KnnEmbeddingClassifier
+from ..models.linear_models import (
     EmbeddingLogisticRegressionModel,
     HybridLogisticRegressionModel,
     TfidfLogisticRegressionModel,
 )
-from models.registry import (
+from ..models.registry import (
     BASELINE_NB_TFIDF,
     EMBEDDING_CENTROID,
     EMBEDDING_KNN,
@@ -974,7 +974,9 @@ def _write_run_notes(preprocessing_mode: str) -> None:
         "secondary_metrics=accuracy precision_macro recall_macro auc",
         "benchmarks=feature_prep fit prediction stages",
     ]
-    (RESULTS_DIR / f"run_notes{_preprocessing_mode_suffix(preprocessing_mode)}.txt").write_text(
+    (
+        RESULTS_DIR / f"run_notes{_preprocessing_mode_suffix(preprocessing_mode)}.txt"
+    ).write_text(
         "\n".join(lines) + "\n",
         encoding="utf-8",
     )

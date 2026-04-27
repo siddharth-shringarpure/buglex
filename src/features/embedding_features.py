@@ -1,6 +1,5 @@
 """Sentence embedding helpers with cache-aware Matryoshka truncation."""
 
-import os
 from pathlib import Path
 
 import numpy as np
@@ -9,7 +8,7 @@ import torch
 import torch.nn.functional as functional
 from sentence_transformers import SentenceTransformer
 
-from config import (
+from ..config import (
     EMBEDDING_BATCH_SIZE,
     EMBEDDING_CACHE_DIR,
     EMBEDDING_DIMENSIONS,
@@ -144,37 +143,13 @@ def _load_embedding_model() -> SentenceTransformer:
     global _EMBEDDING_MODEL  # pylint: disable=global-statement
 
     if _EMBEDDING_MODEL is None:
-        if _has_local_model_snapshot():
-            os.environ["HF_HUB_OFFLINE"] = "1"
-            os.environ["TRANSFORMERS_OFFLINE"] = "1"
-            _EMBEDDING_MODEL = SentenceTransformer(
-                EMBEDDING_MODEL_NAME,
-                trust_remote_code=True,
-                local_files_only=True,
-            )
-        else:
-            os.environ.pop("HF_HUB_OFFLINE", None)
-            os.environ.pop("TRANSFORMERS_OFFLINE", None)
-            _EMBEDDING_MODEL = SentenceTransformer(
-                EMBEDDING_MODEL_NAME,
-                trust_remote_code=True,
-            )
+        _EMBEDDING_MODEL = SentenceTransformer(
+            EMBEDDING_MODEL_NAME,
+            trust_remote_code=True,
+        )
         _EMBEDDING_MODEL.max_seq_length = EMBEDDING_MAX_SEQ_LENGTH
     return _EMBEDDING_MODEL
 
-
-def _has_local_model_snapshot() -> bool:
-    """Check whether the configured Hugging Face model is cached locally.
-
-    Returns:
-        True if a snapshot exists in the local Hugging Face cache
-    """
-    cache_root = Path.home() / ".cache" / "huggingface" / "hub"
-    model_slug = EMBEDDING_MODEL_NAME.replace("/", "--")
-    snapshot_root = cache_root / f"models--{model_slug}" / "snapshots"
-    if not snapshot_root.exists():
-        return False
-    return any(path.is_dir() for path in snapshot_root.iterdir())
 
 
 def _embedding_cache_path(dataset_name: str, suffix: str, cache_key: str = "") -> Path:

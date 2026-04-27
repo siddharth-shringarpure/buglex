@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-from config import AVAILABLE_DATASETS, DATASETS_DIR
+from ..config import AVAILABLE_DATASETS, DATASETS_DIR
 
 
 def load_dataset(dataset_name: str) -> tuple[pd.Series, pd.Series]:

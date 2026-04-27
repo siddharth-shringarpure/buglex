@@ -5,8 +5,8 @@
 import argparse
 import logging
 
-from config import AVAILABLE_DATASETS, N_RUNS, RESULTS_DIR, SEEDS, TEST_SIZE
-from logging_config import configure_logging
+from .config import AVAILABLE_DATASETS, N_RUNS, RESULTS_DIR, SEEDS, TEST_SIZE
+from .logging_config import configure_logging
 
 
 def parse_args() -> argparse.Namespace:
@@ -33,10 +33,10 @@ def main() -> None:
     args = parse_args()
     logging.info("Starting baseline with dataset: %s", args.dataset)
 
-    from experiments.evaluate import evaluate_baseline_model
-    from features.data_load import load_dataset
-    from features.text_prep import preprocess_texts
-    from models.baseline_nb_tfidf import BaselineNbTfidf
+    from .experiments.evaluate import evaluate_baseline_model
+    from .features.data_load import load_dataset
+    from .features.text_prep import preprocess_texts
+    from .models.baseline_nb_tfidf import BaselineNbTfidf
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 

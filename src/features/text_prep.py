@@ -7,7 +7,7 @@ import pandas as pd
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
-from config import PREPROCESSING_MODES
+from ..config import PREPROCESSING_MODES
 
 
 URL_PATTERN = re.compile(r"https?://\S+|www\.\S+")

@@ -44,7 +44,7 @@ To reproduce the main reported experiment outputs and regenerate the default
 figures, run:
 
 \begin{verbatim}
-      uv run python3.13 src/run_experiments.py --with-plots
+      uv run python -m src.run_experiments --with-plots
 \end{verbatim}
 This command:
 \begin{itemize}
@@ -70,7 +70,7 @@ Notable reported files include:
 To reproduce all preprocessing ablations as well:
 
 \begin{verbatim}
-    uv run python3.13 src/run_experiments.py --all-preprocessing --with-plots
+    uv run python -m src.run_experiments --all-preprocessing --with-plots
 \end{verbatim}
 
 This repeats the experiment workflow for the default mode and the four non-default preprocessing modes. Their outputs are saved to mode-specific file names such as:

@@ -4,7 +4,7 @@ import pandas as pd
 from scipy import sparse
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from config import TFIDF_MAX_FEATURES, TFIDF_NGRAM_RANGE
+from ..config import TFIDF_MAX_FEATURES, TFIDF_NGRAM_RANGE
 
 
 def build_tfidf_train_test(

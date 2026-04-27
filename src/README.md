@@ -38,43 +38,43 @@ implementation from Hugging Face. After that, embeddings are cached locally.
 Run the baseline only:
 
 ```bash
-uv run python src/run_baseline.py --dataset caffe
+uv run python -m src.run_baseline --dataset caffe
 ```
 
 Run all implemented models for one dataset:
 
 ```bash
-uv run python src/run_experiments.py --dataset caffe
+uv run python -m src.run_experiments --dataset caffe
 ```
 
 Run all implemented models for every dataset:
 
 ```bash
-uv run python src/run_experiments.py
+uv run python -m src.run_experiments
 ```
 
 Run the default full experiment and regenerate the plots right after:
 
 ```bash
-uv run python src/run_experiments.py --with-plots
+uv run python -m src.run_experiments --with-plots
 ```
 
 Run every preprocessing ablation in one go:
 
 ```bash
-uv run python src/run_experiments.py --all-preprocessing
+uv run python -m src.run_experiments --all-preprocessing
 ```
 
 Run every preprocessing ablation and then regenerate the default plots:
 
 ```bash
-uv run python src/run_experiments.py --all-preprocessing --with-plots
+uv run python -m src.run_experiments --all-preprocessing --with-plots
 ```
 
 Run one specific preprocessing variant across every dataset:
 
 ```bash
-uv run python src/run_experiments.py --preprocessing-mode lemmatize
+uv run python -m src.run_experiments --preprocessing-mode lemmatize
 ```
 
 Generate a macro-F1 comparison figure from the main summary:
@@ -87,7 +87,7 @@ To activate the virtual environment manually first:
 
 ```bash
 source .venv/bin/activate
-python src/run_experiments.py --dataset caffe
+python -m src.run_experiments --dataset caffe
 ```
 
 ## Outputs

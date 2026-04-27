@@ -21,11 +21,8 @@ source .venv/bin/activate  # bash/zsh
 ```
 
 ### Windows
-```powershell
-powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-uv sync
-.venv\Scripts\activate
-```
+
+Please see instructions at the [Installing uv](https://docs.astral.sh/uv/getting-started/installation/) page.
 
 ## Running Experiments
 
@@ -33,20 +30,34 @@ Commands can be run directly using `uv`:
 
 ```bash
 # Run the baseline model on a single dataset
-uv run python src/run_baseline.py --dataset caffe
+uv run python -m src.run_baseline --dataset caffe
 
 # Run the full experiment suite across all datasets
-uv run python src/run_experiments.py
+uv run python -m src.run_experiments
 
 # Run all experiments and generate comparison plots automatically
-uv run python src/run_experiments.py --with-plots
+uv run python -m src.run_experiments --with-plots
 
 # Run experiments with a specific preprocessing mode (eg: lemmatize)
-uv run python src/run_experiments.py --preprocessing-mode lemmatize
+uv run python -m src.run_experiments --preprocessing-mode lemmatize 
 
 # Run all preprocessing ablations
-uv run python src/run_experiments.py --all-preprocessing
+uv run python -m src.run_experiments --all-preprocessing
 ```
+
+## Results
+
+Mean macro-F1 ± std across 30 stratified runs (70/30 split). Source: [`results/main_table_macro_f1.csv`](results/main_table_macro_f1.csv).
+
+| Dataset | Baseline NB + TF-IDF | TF-IDF + LogReg | Embedding LogReg | **Hybrid LogReg** |
+|---|---|---|---|---|
+| Caffe | 0.623 ± 0.073 | 0.758 ± 0.061 | 0.744 ± 0.046 | **0.788 ± 0.063** |
+| Incubator-MXNet | 0.503 ± 0.037 | 0.779 ± 0.031 | 0.832 ± 0.026 | **0.844 ± 0.030** |
+| Keras | 0.530 ± 0.039 | 0.805 ± 0.034 | 0.845 ± 0.025 | **0.856 ± 0.023** |
+| PyTorch | 0.529 ± 0.039 | 0.751 ± 0.037 | 0.796 ± 0.028 | **0.814 ± 0.027** |
+| TensorFlow | 0.628 ± 0.027 | 0.820 ± 0.026 | 0.875 ± 0.016 | **0.882 ± 0.017** |
+
+The hybrid model outperforms the baseline on all five datasets, with statistically significant improvements over the baseline.
 
 ## Generating Documentation & Reports
 
