@@ -1,0 +1,41 @@
+name: Full Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  full-pipeline:
+    name: Full experiment run (caffe, all models + embeddings)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      # Run the full experiment suite on caffe:
+      # 1. download embedding model
+      # 2. generate embeddings
+      # 3. run all model variants over 30 splits
+      # 4. write all result CSVs
+      - name: Run full experiment pipeline (caffe)
+        working-directory: src
+        run: uv run python run_experiments.py --dataset caffe
+
+      - name: Verify key output files
+        run: |
+          test -f results/caffe_all_models_768.csv || (echo "Missing per-run CSV" && exit 1)
+          test -f results/caffe_embedding_ablation_512_256_128_64.csv || (echo "Missing ablation CSV" && exit 1)
+          echo "All expected outputs present."
