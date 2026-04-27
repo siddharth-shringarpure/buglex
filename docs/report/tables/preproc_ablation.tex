@@ -1,11 +1,11 @@
 \begin{tabular}{lccc}
 \toprule
-Mode & Mean $\Delta$F1 vs default & Worst $\Delta$F1 & Worst dataset \\
+Mode & Mean $\Delta$F1 vs default & Worst $\Delta$F1 \\
 \midrule
-Default & 0.0000 & 0.0000 & Caffe \\
-Stopwords & -0.0092 & -0.0155 & Incubator-MXNet \\
-Stopwords + negation & -0.0091 & -0.0221 & Incubator-MXNet \\
-Lemmatise & 0.0004 & -0.0031 & PyTorch \\
-Negation + lemmatise & -0.0102 & -0.0219 & Incubator-MXNet \\
+Default & 0.0000 & 0.0000 \\
+Stopwords & -0.0092 & -0.0155 \\
+Stopwords (filtered) & -0.0091 & -0.0221 \\
+Lemmatise & 0.0004 & -0.0031 \\
+Stopwords (filtered) + Lemmatise & -0.0102 & -0.0219 \\
 \bottomrule
 \end{tabular}
