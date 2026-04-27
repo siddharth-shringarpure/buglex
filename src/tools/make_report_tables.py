@@ -291,12 +291,11 @@ def _build_preproc_ablation_table(df: pd.DataFrame) -> str:
                 _format_mode_name(mode),
                 _format_decimal(hybrid_delta.mean(), places=4),
                 _format_decimal(hybrid_delta.min(), places=4),
-                _format_dataset_name(hybrid_delta.idxmin()),
             ]
         )
     return _tabular(
         "lccc",
-        ["Mode", "Mean $\\Delta$F1 vs default", "Worst $\\Delta$F1", "Worst dataset"],
+        ["Mode", "Mean $\\Delta$F1 vs default", "Worst $\\Delta$F1"],
         rows,
     )
 
@@ -529,9 +528,9 @@ def _format_mode_name(name: str) -> str:
     mapping = {
         "none": "Default",
         "stopwords_all": "Stopwords",
-        "stopwords_keep_negation": "Stopwords + negation",
+        "stopwords_keep_negation": "Stopwords (filtered)",
         "lemmatize": "Lemmatise",
-        "stopwords_keep_negation+lemmatize": "Negation + lemmatise",
+        "stopwords_keep_negation+lemmatize": "Stopwords (filtered) + Lemmatise",
     }
     return mapping.get(name, name)
 
