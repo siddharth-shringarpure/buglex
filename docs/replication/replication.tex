@@ -1,0 +1,127 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{../ise-doc}
+\usepackage{booktabs}
+
+\title{BUGLEX --- Replication Guide}
+\author{Siddharth Shringarpure}
+\date{}
+
+\begin{document}
+\singlespacing
+\pagestyle{plain}
+\maketitle
+
+\section{Purpose}
+
+This document explains how to reproduce the main experimental results reported for the bug report classification tool. The goal is to reproduce the saved CSV outputs, report tables, and report figures from the repository rather than to re-implement the pipeline from scratch.
+
+
+\section{Environment and Dependencies}
+
+Ensure your system meets the dependencies and environment requirements outlined in \texttt{requirements.pdf}. Initialise the project with:
+
+\begin{verbatim}
+    uv sync
+\end{verbatim}
+
+
+\section{Reproducing the Main Results}
+
+\subsection{Default Reported Results}
+
+To reproduce the main reported experiment outputs and regenerate the default
+figures, run:
+
+\begin{verbatim}
+      uv run python3.13 src/run_experiments.py --with-plots
+\end{verbatim}
+This command:
+\begin{itemize}
+    \item evaluates all main models on all five datasets
+    \item runs the 768-dimensional main comparison
+    \item runs the 512, 256, 128, and 64 dimensional embedding ablation
+    \item automatically performs statistical tests (Wilcoxon and Friedman)
+    \item saves summary and statistical CSV outputs under \texttt{results/}
+    \item regenerates the default figures in \texttt{results/figures/}
+\end{itemize}
+Notable reported files include:
+\begin{itemize}
+    \item \texttt{results/summary\_768.csv}
+    \item \texttt{results/wilcoxon\_summary\_768.csv}
+    \item \texttt{results/friedman\_main\_models\_768.csv}
+    \item \texttt{results/embedding\_ablation\_summary\_512\_256\_128\_64.csv}
+    \item \texttt{results/main\_table\_macro\_f1.csv}
+    \item \texttt{results/figures/hybrid\_ablation.png}
+\end{itemize}
+
+
+\subsection{Preprocessing Ablation}
+To reproduce all preprocessing ablations as well:
+
+\begin{verbatim}
+    uv run python3.13 src/run_experiments.py --all-preprocessing --with-plots
+\end{verbatim}
+
+This repeats the experiment workflow for the default mode and the four non-default preprocessing modes. Their outputs are saved to mode-specific file names such as:
+\begin{itemize}
+    \item \texttt{results/summary\_768\_lemmatize.csv}
+    \item \texttt{results/summary\_768\_stopwords\_all.csv}
+    \item \texttt{results/summary\_768\_stopwords\_keep\_negation.csv}
+    \item \texttt{results/summary\_768\_stopwords\_keep\_negation\_plus\_lemmatize.csv}
+\end{itemize}
+
+
+\section{Protocol Being Reproduced}
+The key evaluation settings are:
+\begin{itemize}
+    \item five datasets: Caffe, Incubator-MXNet, Keras, PyTorch, and TensorFlow
+    \item 30 paired runs with seeds 0 to 29
+    \item 70/30 stratified train-test split
+    \item macro-F1 as the primary metric
+    \item TF-IDF fit on the training split only
+    \item one-sided paired Wilcoxon test for Hybrid LogReg versus the baseline
+    \item supplementary Friedman test across the four main models
+\end{itemize}
+These settings are also summarised in \texttt{results/run\_notes.txt} and the mode-specific \texttt{run\_notes\_*} files.
+
+
+\section{Cross-Platform Reproducibility}
+
+Results were produced on macOS 26.4.1 (Apple Silicon). Running on a different operating system or CPU architecture (eg: Linux-based x86-64 distributions) may yield slightly different numerical outputs, even with identical seeds and dependency versions. This may be caused by platform-level differences in dependency implementations of features, such as stratified sampling and tie-breaking. However, the differences are typically small and should not affect the relative ranking or ordering of models, nor the conclusions drawn from statistical tests.
+
+
+\section{Caching and Expected Behaviour}
+
+Sentence embeddings are cached in \texttt{results/embeddings/}; this is expected and desirable for replication, as the reported runtime tables are cached model-stage costs rather than one-off embedding-construction costs. The embedding caches are named to distinguish them by dataset, dimension, model, and preprocessing mode, so a rerun might not require manual deletion of cached files.
+
+
+\section{Rebuilding the Report}
+
+After regenerating the results, rebuild the report tables and PDF with:
+
+\begin{verbatim}
+    uv run python3.13 src/tools/build_docs.py --report-only
+\end{verbatim}
+
+This command regenerates the \LaTeX{} table fragments from the current \texttt{results/} CSV files and recompiles \texttt{docs/report/report.tex}.
+
+
+\section{Expected Final Artefacts}
+
+After a successful reproduction run, the repository should contain:
+
+\begin{itemize}
+    \item the regenerated CSV outputs under \texttt{results/}
+    \item the regenerated figures under \texttt{results/figures/}
+    \item the rebuilt report PDF under \texttt{docs/report/report.pdf}
+    \item the root-level PDFs \texttt{requirements.pdf}, \texttt{manual.pdf},
+        and \texttt{replication.pdf}
+\end{itemize}
+
+
+\section{Artefact Location}
+
+\texttt{replication.pdf} is placed in the repository root. The source for this PDF is stored in \texttt{docs/replication/}.
+
+\end{document}

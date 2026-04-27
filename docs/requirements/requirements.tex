@@ -1,0 +1,103 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{../ise-doc}
+\usepackage{booktabs}
+
+\title{BUGLEX --- Requirements}
+\author{Siddharth Shringarpure}
+\date{}
+
+\begin{document}
+\singlespacing
+\pagestyle{plain}
+\maketitle
+
+\section{Purpose}
+
+This document lists dependencies and their associated versions required to run BUGLEX and collate results.
+
+
+\section{Platform Assumptions}
+
+The project has been developed and tested with:
+\begin{itemize}
+      \item Python 3.13
+      \item the \texttt{uv} package and environment manager (version 0.9.21)
+      \item a standard shell environment capable of running Python scripts from the
+      repository root
+      \item running on macOS 26.4.1
+\end{itemize}
+
+The code is written in Python and is intended to be platform-agnostic, but the sentence-embedding stage assumes that the required Python packages can be installed and that the machine can download the embedding model on the first run.
+
+
+\section{Installing \texttt{uv}}
+
+\texttt{uv} is used for environment and dependency management. Ensure it is installed before running any project commands.
+
+\textbf{macOS / Linux (recommended):}
+\begin{verbatim}
+      curl -LsSf https://astral.sh/uv/install.sh | sh
+\end{verbatim}
+
+\textbf{Windows (PowerShell):}
+\begin{verbatim}
+      Please use the official uv documentation below for install instructions
+\end{verbatim}
+
+After installation, verify with \texttt{uv -{}-version}. For more detailed instructions, see the official documentation at \url{https://docs.astral.sh/uv/getting-started/installation/}.
+
+\section{Python Dependencies}
+The Python dependencies are declared in \texttt{pyproject.toml} and locked in \texttt{uv.lock}. At the time of writing, the direct project dependencies are:
+
+\begin{itemize}
+\item \texttt{numpy >= 2.4.4}
+\item \texttt{pandas >= 3.0.1}
+\item \texttt{scipy >= 1.16.3}
+\item \texttt{scikit-learn >= 1.8.0}
+\item \texttt{sentence-transformers >= 5.3.0}
+\item \texttt{torch >= 2.11.0}
+\item \texttt{matplotlib >= 3.10.8}
+\item \texttt{einops >= 0.8.2}
+\item \texttt{nltk >= 3.9.4}
+\end{itemize}
+
+Create the environment from the repository root with:
+
+\begin{verbatim}
+      uv sync
+\end{verbatim}
+
+This installs the locked dependencies into the local \texttt{.venv/} environment.
+
+\section{External Runtime Requirements}
+The first embedding run downloads the sentence embedding model, \texttt{nomic-ai/nomic-embed-text-v1.5}, from Hugging Face, so internet access is required for this procedure, unless the model is already cached locally.
+
+NLTK resources used by the preprocessing pipeline are handled through the project code. If the local environment does not already contain the relevant resources, the first preprocessing run may similarly fetch them automatically.
+
+\section{Report-Build Requirements}
+Rebuilding the main report PDF additionally requires either:
+\begin{itemize}
+      \item \texttt{latexmk}, or
+      \item both \texttt{pdflatex} and \texttt{bibtex}
+\end{itemize}
+
+The report build helper can be run from the repository root with:
+
+\begin{verbatim}
+      uv run python3.13 src/tools/build_docs.py --report-only
+\end{verbatim}
+
+\section{Repository Structure}
+The repository expects the following key directories to exist:
+\begin{itemize}
+      \item \texttt{datasets/} for the raw issue datasets
+      \item \texttt{src/} for the implementation
+      \item \texttt{results/} for generated CSV files, cached embeddings, and figures
+      \item \texttt{docs/} for the report and supporting documents
+\end{itemize}
+
+\section{Artefact Location}
+\texttt{requirements.pdf} is placed in the repository root. The source for this PDF is stored in \texttt{docs/requirements/}.
+
+\end{document}

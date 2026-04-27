@@ -1,0 +1,145 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{../ise-doc}
+\usepackage{booktabs}
+
+\title{BUGLEX --- Manual}
+\author{Siddharth Shringarpure}
+\date{}
+
+\begin{document}
+\singlespacing
+\pagestyle{plain}
+\maketitle
+
+\section{Purpose}
+
+This document explains how to use the bug report classification tool. The tool evaluates several text classification models for binary issue classification over five datasets: \texttt{caffe}, \texttt{incubator-mxnet}, \texttt{keras},
+\texttt{pytorch}, and \texttt{tensorflow}. The main reported model is a feature-level hybrid that combines TF-IDF features with sentence embeddings.
+
+
+\section{Getting Started}
+
+Before using the tool, ensure your environment meets the system and software requirements detailed in \texttt{requirements.pdf}. This includes installing the \texttt{uv} package manager and ensuring a compatible \LaTeX{} toolchain is available if you intend to rebuild the report.
+
+From the repository root, initialise the virtual environment with:
+\begin{verbatim}
+      uv sync
+\end{verbatim}
+
+Refer to \texttt{requirements.pdf} for platform-specific installation
+instructions and a list of all Python dependencies.
+
+
+\section{Main Commands}
+
+\subsection{Run the Full Default Experiment}
+To run the main experiment pipeline across all datasets and regenerate the main
+report plots:
+
+\begin{verbatim}
+      uv run python3.13 src/run_experiments.py --with-plots
+\end{verbatim}
+This runs the default preprocessing mode, the main model comparison, the
+embedding-dimension ablation, the plotting step, and all statistical tests (Wilcoxon and Friedman) automatically.
+
+
+\subsection{Run Every Preprocessing Ablation}
+To run all preprocessing variants as well as the default pipeline:
+
+\begin{verbatim}
+      uv run python3.13 src/run_experiments.py --all-preprocessing --with-plots
+\end{verbatim}
+This repeats the experiment workflow for:
+
+\begin{itemize}
+\item \texttt{none}
+\item \texttt{stopwords\_all}
+\item \texttt{stopwords\_keep\_negation}
+\item \texttt{lemmatize}
+\item \texttt{stopwords\_keep\_negation+lemmatize}
+\end{itemize}
+
+
+\subsection{Run One Dataset Only}
+For a quicker or targeted run on a single dataset:
+
+\begin{verbatim}
+      uv run python3.13 src/run_experiments.py --dataset caffe
+\end{verbatim}
+
+
+\subsection{Run the Baseline Only}
+To execute only the Naïve Bayes + TF-IDF baseline:
+
+\begin{verbatim}
+      uv run python3.13 src/run_baseline.py --dataset caffe
+\end{verbatim}
+
+
+\subsection{Regenerate Plots}
+If the result CSV files already exist and only the figures need to be rebuilt:
+
+\begin{verbatim}
+      uv run python3.13 src/plot_results.py
+\end{verbatim}
+
+
+\subsection{Rebuild the Report}
+To regenerate the \LaTeX{} table fragments and rebuild the main report PDF:
+
+\begin{verbatim}
+      uv run python3.13 src/tools/build_docs.py --report-only
+\end{verbatim}
+This command regenerates the \LaTeX{} table fragments from the current
+\texttt{results/} CSV files and recompiles \texttt{docs/report/report.tex}.
+
+
+\section{Outputs}
+
+The main outputs are written to \texttt{results/}. Important files include:
+\begin{itemize}
+\item per-dataset run outputs such as
+      \texttt{results/caffe\_all\_models\_768.csv}
+\item top-level summary files such as
+      \texttt{results/summary\_768.csv}
+\item statistical summary files such as
+      \texttt{results/wilcoxon\_summary\_768.csv}
+\item ablation summaries such as
+      \texttt{results/embedding\_ablation\_summary\_512\_256\_128\_64.csv}
+\item report figures in \texttt{results/figures/}
+\item generated report notes in \texttt{results/report\_notes.txt}
+\end{itemize}
+
+Cached embeddings are written to \texttt{results/embeddings/}. These caches are separated by dataset, model, dimension, and preprocessing mode, so routine reruns should not require manual cache deletion.
+
+
+\section{Typical Usage}
+
+For normal use, the simplest sequence is:
+
+\begin{enumerate}
+      \item ensure dependencies are installed via \texttt{uv sync}
+      \item run the default experiment with
+            \texttt{uv run python3.13 src/run\_experiments.py -{}-with-plots}
+      \item if needed, run the full preprocessing ablation with
+            \texttt{uv run python3.13 src/run\_experiments.py --all-preprocessing -{}-with-plots}
+      \item rebuild the report with
+            \texttt{uv run python3.13 src/tools/build\_docs.py -{}-report-only}
+\end{enumerate}
+
+
+\section{Troubleshooting}
+
+\begin{itemize}
+      \item If the first embedding run is slow, this is expected. The model is being downloaded and cached.
+      \item If \texttt{-{}-help} feels slow, use the updated runner scripts. Their heavier imports are deferred until after argument parsing.
+      \item If environment setup or report building fails, refer to \texttt{requirements.pdf} to ensure all dependencies and system tools are correctly installed.
+\end{itemize}
+
+
+\section{Artefact Location}
+
+\texttt{manual.pdf} is placed in the repository root. The source for this PDF is stored in \texttt{docs/manual/}.
+
+\end{document}
