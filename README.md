@@ -6,8 +6,23 @@ Code and data for *semlex: Semantic-Lexical Fusion for Performance Bug Report Cl
 
 ## Report & Citation
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20937645.svg)](https://doi.org/10.5281/zenodo.20937645)
+
+
 The full report is available at [`report.pdf`](report.pdf).
 Supplementary documentation (manual, replication guide) is in [`docs/`](docs/).
+
+If you use this work, please cite:
+```bibtex
+@misc{https://doi.org/10.5281/zenodo.20937645,
+    doi = {10.5281/ZENODO.20937645},
+    url = {https://zenodo.org/doi/10.5281/zenodo.20937645},
+    author = {Shringarpure, Siddharth},
+    title = {semlex: Semantic-Lexical Fusion for Performance Bug Report Classification},
+    publisher = {Zenodo},
+    year = {2026},
+}
+```
 
 ## Setup
 
