@@ -7,7 +7,7 @@
 
 \hypersetup{
     hidelinks,
-    pdftitle={BUGLEX --- Replication Guide},
+    pdftitle={semlex --- Replication Guide},
     pdfauthor={Siddharth Shringarpure},
     pdfproducer={Siddharth Shringarpure},
     pdfcreator={},
@@ -15,7 +15,7 @@
     pdfmoddate={D:20260427150000+01'00'}
 }
 
-\title{BUGLEX --- Replication Guide}
+\title{semlex --- Replication Guide}
 \author{Siddharth Shringarpure}
 \date{}
 
@@ -105,7 +105,7 @@ Results were produced on macOS 26.4.1 (Apple Silicon). Running on a different op
 
 \section{Independent Verification via Continuous Integration}
 
-The \href{https://github.com/siddharth-shringarpure/buglex/tree/main/.github/workflows}{repository workflows} run the pipeline on a clean Ubuntu environment hosted by GitHub, independently of the machine used to produce the reported results. A smoke test runs on pushes to the repository, which installs all dependencies from scratch, confirms the embedding model loads with the correct output shape, and runs the TF-IDF baseline on the \texttt{caffe} dataset end-to-end. A second workflow, triggered manually, runs the full experiment pipeline. Passing these checks on a separate machine provides some independent confidence that the results are not specific to the development environment.
+The \href{https://github.com/siddharth-shringarpure/semlex/tree/main/.github/workflows}{repository workflows} run the pipeline on a clean Ubuntu environment hosted by GitHub, independently of the machine used to produce the reported results. A smoke test runs on pushes to the repository, which installs all dependencies from scratch, confirms the embedding model loads with the correct output shape, and runs the TF-IDF baseline on the \texttt{caffe} dataset end-to-end. A second workflow, triggered manually, runs the full experiment pipeline. Passing these checks on a separate machine provides some independent confidence that the results are not specific to the development environment.
 
 
 \section{Caching and Expected Behaviour}

@@ -1,8 +1,13 @@
-# BUGLEX: Semantic–Lexical Fusion for Performance Bug Classification
+# semlex: Semantic–Lexical Fusion for Performance Bug Classification
 
-[![Smoke Test](https://github.com/siddharth-shringarpure/buglex/actions/workflows/smoke-test.yml/badge.svg)](https://github.com/siddharth-shringarpure/buglex/actions/workflows/smoke-test.yml)
+[![Smoke Test](https://github.com/siddharth-shringarpure/semlex/actions/workflows/smoke-test.yml/badge.svg)](https://github.com/siddharth-shringarpure/semlex/actions/workflows/smoke-test.yml)
 
-This repository provides the code and framework used to evaluate machine learning models for performance bug report classification, including feature engineering (TF-IDF and embeddings) and hybrid model training.
+Code and data for *semlex: Semantic-Lexical Fusion for Performance Bug Report Classification*. A hybrid TF-IDF + sentence embedding classifier consistently outperforms a lexical baseline across five ML repositories, with statistically significant gains validated over 30 stratified runs.
+
+## Report & Citation
+
+The full report is available at [`report.pdf`](report.pdf).
+Supplementary documentation (manual, replication guide) is in [`docs/`](docs/).
 
 ## Setup
 

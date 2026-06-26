@@ -19,14 +19,14 @@
 \graphicspath{{../../results/figures/}}
 
 \hypersetup{
-    pdftitle={Semantic-Lexical Fusion for Performance Bug Report Classification},
+    pdftitle={semlex: Semantic-Lexical Fusion for Performance Bug Report Classification},
     pdfauthor={Siddharth Shringarpure},
     pdfproducer={Siddharth Shringarpure},
     pdfcreator={},
     pdfcreationdate={D:20260427150000+01'00'}
 }
 
-\title{Semantic-Lexical Fusion for Performance Bug Report Classification}
+\title{semlex: Semantic-Lexical Fusion for Performance Bug Report Classification}
 \author{Siddharth Shringarpure}
 \date{\textcolor{darkgray}{Last updated: \today}}
 
@@ -36,7 +36,7 @@
 \pagestyle{plain}
 
 \begin{abstract}
-    Efficient bug report classification is increasingly important in software engineering as issue volumes grow beyond what manual triage can realistically handle. This creates bottlenecks in how issues are routed between maintainers, slowing down issue resolution. This report studies performance bug classification, where reports are either performance relevant (eg: accuracy, inference speed) or not. It evaluates a hybrid pipeline that combines sparse TF-IDF features with dense sentence embeddings against a TF-IDF-based Naïve Bayes baseline across five datasets, each corresponding to issues from a different machine-learning repository. A hybrid Logistic Regression model achieves higher macro-F1 across all datasets. Ablations show that most gains still hold when the sentence embedding dimension is reduced, whilst common preprocessing steps, such as stop-word removal and text lemmatisation, add little-to-no benefit.
+    As issue volumes outpace manual triage in software engineering, automated classification of bug reports becomes increasingly important for routing issues to the right maintainers to facilitate timely issue resolution. This report evaluates a hybrid pipeline that combines sparse TF-IDF features with dense sentence embeddings for classifying performance-related bug reports, benchmarked against a TF-IDF-based Naïve Bayes baseline across five machine-learning repositories, where reports are either performance relevant (eg: accuracy, inference speed) or not. A hybrid Logistic Regression model achieves higher macro-F1 across all datasets. Ablations show that most gains still hold when the sentence embedding dimension is reduced, whilst common preprocessing steps, such as stop-word removal and text lemmatisation, add little-to-no benefit.
 \end{abstract}
 
 \section{Introduction}\label{introduction}
@@ -290,14 +290,14 @@ Feature-level fusion also reliably outperforms late fusion, whilst embedding-bas
 
 \section{Artefact}
 
-The repository, available at: \href{https://github.com/siddharth-shringarpure/buglex}{\texttt{github.com/siddharth-shringarpure/buglex}}, contains the full source code, datasets, and raw result CSV files used to generate the tables and figures in the report. The repository root also contains 
-\href{https://github.com/siddharth-shringarpure/buglex/blob/main/requirements.pdf}{\texttt{requirements.pdf}}, 
-\href{https://github.com/siddharth-shringarpure/buglex/blob/main/manual.pdf}{\texttt{manual.pdf}}, and 
-\href{https://github.com/siddharth-shringarpure/buglex/blob/main/replication.pdf}{\texttt{replication.pdf}}. Source code is under
-\href{https://github.com/siddharth-shringarpure/buglex/tree/main/src}{\texttt{src/}}, datasets under 
-\href{https://github.com/siddharth-shringarpure/buglex/tree/main/datasets}{\texttt{datasets/}}, generated outputs under 
-\href{https://github.com/siddharth-shringarpure/buglex/tree/main/results}{\texttt{results/}}, and report materials under 
-\href{https://github.com/siddharth-shringarpure/buglex/tree/main/docs}{\texttt{docs/}}.
+The repository, available at: \href{https://github.com/siddharth-shringarpure/semlex}{\texttt{github.com/siddharth-shringarpure/semlex}}, contains the full source code, datasets, and raw result CSV files used to generate the tables and figures in the report. Supporting documentation --- including the
+\href{https://github.com/siddharth-shringarpure/semlex/blob/main/replication.pdf}{\texttt{replication guide}}, 
+\href{https://github.com/siddharth-shringarpure/semlex/blob/main/manual.pdf}{\texttt{manual}}, and 
+\href{https://github.com/siddharth-shringarpure/semlex/blob/main/requirements.pdf}{\texttt{requirements}} --- is available under
+\href{https://github.com/siddharth-shringarpure/semlex/tree/main/docs}{\texttt{docs/}}. Source code is under
+\href{https://github.com/siddharth-shringarpure/semlex/tree/main/src}{\texttt{src/}}, datasets under 
+\href{https://github.com/siddharth-shringarpure/semlex/tree/main/datasets}{\texttt{datasets/}}, and generated outputs under 
+\href{https://github.com/siddharth-shringarpure/semlex/tree/main/results}{\texttt{results/}}.
 
 % \section{References}
 \bibliographystyle{IEEEtran}
